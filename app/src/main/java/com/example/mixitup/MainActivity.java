@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.mixitup.data.Playlist;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(SpotifyConnection.getClientId(), AuthorizationResponse.Type.TOKEN, SpotifyConnection.getRedirectUri());
 
-        builder.setScopes(new String[]{"streaming"});
+        builder.setScopes(new String[]{ "streaming", "playlist-read-private" });
         AuthorizationRequest request = builder.build();
 
         AuthorizationClient.openLoginActivity(this, SpotifyConnection.getRequestCode(), request);
@@ -72,6 +73,14 @@ public class MainActivity extends AppCompatActivity {
             public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                 Log.d("MainActivity", "Connected! Yay!");
                 repo.initSpotifyConnection(token, spotifyAppRemote);
+                repo.getCurrentUser(result -> {
+                    System.out.println(result.id + " - " + result.displayName);
+                });
+                repo.getUserPlaylists(result -> {
+                    for(Playlist playlist : result) {
+                        System.out.println(playlist.id + " - " + playlist.name);
+                    }
+                });
             }
 
             @Override

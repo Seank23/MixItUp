@@ -1,14 +1,24 @@
 package com.example.mixitup;
 
-import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
-import com.spotify.android.appremote.api.ConnectionParams;
-import com.spotify.android.appremote.api.Connector;
+import com.example.mixitup.data.Playlist;
+import com.example.mixitup.data.User;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.Track;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.concurrent.Callable;
+import java.util.concurrent.Executors;
 
 public class SpotifyConnection {
 
@@ -19,11 +29,12 @@ public class SpotifyConnection {
     private String token;
     private SpotifyAppRemote appRemote;
 
-    public SpotifyConnection(String accessToken, SpotifyAppRemote spotifyAppRemote) {
+    interface APIGetUserCallback {
+        void onGetUser(User newUser);
+    }
 
-        token = accessToken;
-        appRemote = spotifyAppRemote;
-        connected();
+    interface APIGetPlaylistsCallback {
+        void onGetPlaylists(ArrayList<Playlist> playlists);
     }
 
     public static int getRequestCode() { return REQUEST_CODE; }
@@ -32,23 +43,52 @@ public class SpotifyConnection {
 
     public static String getRedirectUri() { return REDIRECT_URI; }
 
-
-    private void connected() {
-        // Play a playlist
-        appRemote.getPlayerApi().play("spotify:playlist:37i9dQZF1DX2sUQwD7tbmL");
-
-        // Subscribe to PlayerState
-        appRemote.getPlayerApi()
-                .subscribeToPlayerState()
-                .setEventCallback(playerState -> {
-                    final Track track = playerState.track;
-                    if (track != null) {
-                        Log.d("MainActivity", track.name + " by " + track.artist.name);
-                    }
-                });
+    public void initAPI(String accessToken, SpotifyAppRemote spotifyAppRemote) {
+        token = accessToken;
+        appRemote = spotifyAppRemote;
     }
 
     public void disconnect() {
         SpotifyAppRemote.disconnect(appRemote);
+    }
+
+    public void getCurrentUser(APIGetUserCallback callback) {
+
+        try {
+            Utils.getHttpResponseAsync("https://api.spotify.com/v1/me", token, result -> {
+                try {
+                    String id  = (String)new JSONObject(result).get("id");
+                    String displayName  = (String)new JSONObject(result).get("display_name");
+                    callback.onGetUser(new User(id, displayName));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch(Exception e) {
+            System.out.println(e.getStackTrace());
+        }
+    }
+
+    public void getUserPlaylists(APIGetPlaylistsCallback callback) {
+
+        try {
+            Utils.getHttpResponseAsync("https://api.spotify.com/v1/me/playlists", token, result -> {
+                try {
+                    JSONArray playlistsJson = new JSONObject(result).getJSONArray("items");
+                    ArrayList<Playlist> playlists = new ArrayList<>();
+                    for(int i = 0; i < playlistsJson.length(); i++) {
+                        JSONObject playlistJson = playlistsJson.getJSONObject(i);
+                        String id = (String)playlistJson.get("id");
+                        String name = (String)playlistJson.get("name");
+                        playlists.add(new Playlist(id, name));
+                    }
+                    callback.onGetPlaylists(playlists);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch(Exception e) {
+            System.out.println(e.getStackTrace());
+        }
     }
 }
