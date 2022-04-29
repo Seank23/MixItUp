@@ -1,4 +1,4 @@
-package com.example.mixitup;
+package com.example.mixitup.data;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import com.example.mixitup.Utils;
 import com.example.mixitup.data.Playlist;
 import com.example.mixitup.data.User;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -29,11 +30,11 @@ public class SpotifyConnection {
     private String token;
     private SpotifyAppRemote appRemote;
 
-    interface APIGetUserCallback {
+    public interface APIGetUserCallback {
         void onGetUser(User newUser);
     }
 
-    interface APIGetPlaylistsCallback {
+    public interface APIGetPlaylistsCallback {
         void onGetPlaylists(ArrayList<Playlist> playlists);
     }
 
@@ -80,7 +81,9 @@ public class SpotifyConnection {
                         JSONObject playlistJson = playlistsJson.getJSONObject(i);
                         String id = (String)playlistJson.get("id");
                         String name = (String)playlistJson.get("name");
-                        playlists.add(new Playlist(id, name));
+                        String owner = (String)playlistJson.getJSONObject("owner").get("display_name");
+                        int numTracks = (int)playlistJson.getJSONObject("tracks").get("total");
+                        playlists.add(new Playlist(id, name, owner, numTracks));
                     }
                     callback.onGetPlaylists(playlists);
                 } catch (JSONException e) {

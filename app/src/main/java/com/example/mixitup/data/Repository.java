@@ -1,20 +1,26 @@
-package com.example.mixitup;
+package com.example.mixitup.data;
 
-import com.example.mixitup.data.Playlist;
-import com.example.mixitup.data.User;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 
 import java.util.ArrayList;
 
 public class Repository {
 
+    public static Repository instance;
     private SpotifyConnection spotifyConnection;
     private User currentUser;
-    private ArrayList<Playlist> playlists;
+    private MutableLiveData<ArrayList<Playlist>> playlists;
 
     public Repository() {
+        instance = this;
         spotifyConnection = new SpotifyConnection();
-        playlists = new ArrayList<>();
+        playlists = new MutableLiveData<>();
     }
 
     public void initSpotifyConnection(String accessToken, SpotifyAppRemote spotifyAppRemote) {
@@ -28,10 +34,13 @@ public class Repository {
         });
     }
 
-    public void getUserPlaylists(SpotifyConnection.APIGetPlaylistsCallback callback) {
+    public void fetchUserPlaylists() {
         spotifyConnection.getUserPlaylists(result -> {
-            playlists.addAll(result);
-            callback.onGetPlaylists(playlists);
+            playlists.postValue(result);
         });
+    }
+
+    public LiveData<ArrayList<Playlist>> getPlaylistLiveData() {
+        return playlists;
     }
 }

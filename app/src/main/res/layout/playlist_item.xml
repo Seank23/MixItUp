@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="75dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="55dp" >
+
+            <TextView
+                android:id="@+id/lblPlaylistName"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="2dp"
+                android:text="My Playlist"
+                android:maxLines="1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/lblPlaylistAuthor"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="28dp"
+                android:text="Spotify"
+                android:maxLines="1"
+                android:textSize="16sp" />
+
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/lblPlaylistTracks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="20dp"
+            android:text="10 tracks"
+            android:textSize="20sp" />
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

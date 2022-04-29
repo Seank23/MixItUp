@@ -1,12 +1,18 @@
 package com.example.mixitup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.mixitup.add_playlist.AddPlaylistFragment;
 import com.example.mixitup.data.Playlist;
+import com.example.mixitup.data.Repository;
+import com.example.mixitup.data.SpotifyConnection;
+import com.example.mixitup.queue.QueueFragment;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -14,15 +20,24 @@ import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private Repository repo;
+    private ArrayList<Fragment> fragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         repo = new Repository();
+
+        fragments = new ArrayList<>();
+        fragments.add(new QueueFragment());
+        fragments.add(new AddPlaylistFragment());
+        setCurrentFragment(fragments.get(0), R.id.flFragments);
     }
 
     @Override
@@ -66,7 +81,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void connectAppRemote(String token) {
 
-        ConnectionParams connectionParams = new ConnectionParams.Builder(SpotifyConnection.getClientId()).setRedirectUri(SpotifyConnection.getRedirectUri()).showAuthView(true).build();
+        ConnectionParams connectionParams =
+                new ConnectionParams.Builder(SpotifyConnection.getClientId())
+                        .setRedirectUri(SpotifyConnection.getRedirectUri())
+                        .showAuthView(true).build();
         SpotifyAppRemote.connect(this, connectionParams, new Connector.ConnectionListener() {
 
             @Override
@@ -76,11 +94,11 @@ public class MainActivity extends AppCompatActivity {
                 repo.getCurrentUser(result -> {
                     System.out.println(result.id + " - " + result.displayName);
                 });
-                repo.getUserPlaylists(result -> {
-                    for(Playlist playlist : result) {
-                        System.out.println(playlist.id + " - " + playlist.name);
-                    }
-                });
+//                repo.getUserPlaylists(result -> {
+//                    for(Playlist playlist : result) {
+//                        System.out.println(playlist.id + " - " + playlist.name);
+//                    }
+//                });
             }
 
             @Override
@@ -93,6 +111,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+    }
 
+    public void navAddPlaylist() {
+        setCurrentFragment(fragments.get(1), R.id.flFragments);
+    }
+
+    public void navQueue() {
+        setCurrentFragment(fragments.get(0), R.id.flFragments);
+    }
+
+    private void setCurrentFragment(Fragment fragment, int frameLayoutId) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(frameLayoutId, fragment);
+        ft.commit();
     }
 }
