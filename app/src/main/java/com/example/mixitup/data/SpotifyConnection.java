@@ -1,25 +1,15 @@
 package com.example.mixitup.data;
 
-import android.os.AsyncTask;
-import android.util.Log;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-
 import com.example.mixitup.Utils;
-import com.example.mixitup.data.Playlist;
-import com.example.mixitup.data.User;
+import com.example.mixitup.data.Track;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
-import com.spotify.protocol.types.Track;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executors;
+import java.util.HashMap;
 
 public class SpotifyConnection {
 
@@ -35,7 +25,11 @@ public class SpotifyConnection {
     }
 
     public interface APIGetPlaylistsCallback {
-        void onGetPlaylists(ArrayList<Playlist> playlists);
+        void onGetPlaylists(HashMap<String, Playlist> playlists);
+    }
+
+    public interface APIGetPlaylistTracksCallback {
+        void onGetPlaylistTracks(ArrayList<Track> tracks);
     }
 
     public static int getRequestCode() { return REQUEST_CODE; }
@@ -76,16 +70,44 @@ public class SpotifyConnection {
             Utils.getHttpResponseAsync("https://api.spotify.com/v1/me/playlists", token, result -> {
                 try {
                     JSONArray playlistsJson = new JSONObject(result).getJSONArray("items");
-                    ArrayList<Playlist> playlists = new ArrayList<>();
+                    HashMap<String, Playlist> playlists = new HashMap<>();
                     for(int i = 0; i < playlistsJson.length(); i++) {
                         JSONObject playlistJson = playlistsJson.getJSONObject(i);
                         String id = (String)playlistJson.get("id");
                         String name = (String)playlistJson.get("name");
                         String owner = (String)playlistJson.getJSONObject("owner").get("display_name");
                         int numTracks = (int)playlistJson.getJSONObject("tracks").get("total");
-                        playlists.add(new Playlist(id, name, owner, numTracks));
+                        playlists.put(id, new Playlist(id, name, owner, numTracks));
                     }
                     callback.onGetPlaylists(playlists);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch(Exception e) {
+            System.out.println(e.getStackTrace());
+        }
+    }
+
+    public void getPlaylistTracks(String playlistId, APIGetPlaylistTracksCallback callback) {
+        try {
+            Utils.getHttpResponseAsync(String.format("https://api.spotify.com/v1/playlists/%s/tracks", playlistId), token, result -> {
+                try {
+                    JSONArray tracksJson = new JSONObject(result).getJSONArray("items");
+                    ArrayList<Track> tracks = new ArrayList<>();
+                    for(int i = 0; i < tracksJson.length(); i++) {
+                        JSONObject trackJson = tracksJson.getJSONObject(i).getJSONObject("track");
+                        String id = (String)trackJson.get("id");
+                        String name = (String)trackJson.get("name");
+                        JSONArray artists = trackJson.getJSONArray("artists");
+                        String artistStr = "";
+                        for(int j = 0; j < artists.length(); j++) {
+                            artistStr += artists.getJSONObject(j).get("name") + ", ";
+                        }
+                        artistStr = artistStr.substring(0, artistStr.length() - 2);
+                        tracks.add(new Track(id, name, artistStr));
+                    }
+                    callback.onGetPlaylistTracks(tracks);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

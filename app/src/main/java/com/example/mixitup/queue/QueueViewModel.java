@@ -17,7 +17,7 @@ public class QueueViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public LiveData<ArrayList<Playlist>> getPlaylists() {
-        return Repository.instance.getPlaylistLiveData();
-    }
+//    public LiveData<ArrayList<Playlist>> getPlaylists() {
+//        return Repository.instance.getPlaylistLiveData();
+//    }
 }

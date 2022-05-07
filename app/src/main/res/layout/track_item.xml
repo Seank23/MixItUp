@@ -12,23 +12,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/lblTrackIndex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center_vertical"
+            android:text="1"
+            android:textSize="20sp" />
+
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="55dp" >
+            android:layout_height="55dp"
+            android:layout_marginLeft="50dp">
 
             <TextView
-                android:id="@+id/lblPlaylistName"
-                android:layout_width="240dp"
+                android:id="@+id/lblTrackName"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="2dp"
-                android:text="My Playlist"
+                android:text="Track 1"
                 android:maxLines="1"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/lblPlaylistAuthor"
-                android:layout_width="240dp"
+                android:id="@+id/lblTrackArtist"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="28dp"
@@ -37,27 +47,6 @@
                 android:textSize="16sp" />
 
         </FrameLayout>
-
-        <Button
-            android:id="@+id/btnPlaylistTracks"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="20dp"
-            android:text="10 tracks"
-            android:textSize="16sp"
-            android:textColor="@android:color/holo_blue_light"
-            app:strokeColor="@android:color/holo_blue_light" />
-
-<!--        <TextView-->
-<!--            android:id="@+id/lblPlaylistTracks"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="right|center_vertical"-->
-<!--            android:layout_marginRight="20dp"-->
-<!--            android:text="10 tracks"-->
-<!--            android:textSize="20sp" />-->
 
     </androidx.cardview.widget.CardView>
 

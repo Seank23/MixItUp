@@ -3,19 +3,28 @@ package com.example.mixitup.queue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mixitup.R;
+import com.example.mixitup.add_playlist.AddPlaylistFragment;
 import com.example.mixitup.data.Playlist;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.PlaylistHolder> {
 
     private Playlist[] playlists = new Playlist[0];
+    private Fragment p;
+
+    public PlaylistAdapter(Fragment parent) {
+        p = parent;
+    }
 
     protected static class PlaylistHolder extends RecyclerView.ViewHolder {
 
@@ -38,8 +47,12 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
         name.setText(playlists[position].name);
         TextView author = holder.itemView.findViewById(R.id.lblPlaylistAuthor);
         author.setText(playlists[position].author);
-        TextView tracks = holder.itemView.findViewById(R.id.lblPlaylistTracks);
+        Button tracks = holder.itemView.findViewById(R.id.btnPlaylistTracks);
         tracks.setText(playlists[position].numTracks + " tracks");
+
+        tracks.setOnClickListener(click -> {
+            ((AddPlaylistFragment) p).showTracks(playlists[position]);
+        });
     }
 
     @Override
@@ -47,8 +60,8 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
         return playlists.length;
     }
 
-    public void setData(ArrayList<Playlist> playlistData) {
-        playlists = playlistData.toArray(new Playlist[playlistData.size()]);
+    public void setData(Playlist[] playlistData) {
+        playlists = playlistData;
         notifyDataSetChanged();
     }
 }

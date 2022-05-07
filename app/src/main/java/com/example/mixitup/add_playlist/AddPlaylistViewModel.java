@@ -8,8 +8,10 @@ import androidx.lifecycle.LiveData;
 
 import com.example.mixitup.data.Playlist;
 import com.example.mixitup.data.Repository;
+import com.example.mixitup.data.SpotifyConnection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AddPlaylistViewModel extends AndroidViewModel {
 
@@ -17,11 +19,15 @@ public class AddPlaylistViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public LiveData<ArrayList<Playlist>> getPlaylists() {
+    public LiveData<HashMap<String, Playlist>> getPlaylists() {
         return Repository.instance.getPlaylistLiveData();
     }
 
     public void fetchUserPlaylists() {
         Repository.instance.fetchUserPlaylists();
+    }
+
+    public void fetchPlaylistTracks(String playlistId, SpotifyConnection.APIGetPlaylistTracksCallback callback) {
+        Repository.instance.fetchPlaylistTracks(playlistId, callback);
     }
 }

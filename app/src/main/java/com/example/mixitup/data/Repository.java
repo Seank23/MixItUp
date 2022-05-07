@@ -9,13 +9,14 @@ import androidx.lifecycle.Observer;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Repository {
 
     public static Repository instance;
     private SpotifyConnection spotifyConnection;
     private User currentUser;
-    private MutableLiveData<ArrayList<Playlist>> playlists;
+    private MutableLiveData<HashMap<String, Playlist>> playlists;
 
     public Repository() {
         instance = this;
@@ -40,7 +41,16 @@ public class Repository {
         });
     }
 
-    public LiveData<ArrayList<Playlist>> getPlaylistLiveData() {
+    public void fetchPlaylistTracks(String playlistId, SpotifyConnection.APIGetPlaylistTracksCallback callback) {
+        spotifyConnection.getPlaylistTracks(playlistId, result -> {
+            HashMap<String, Playlist> temp = playlists.getValue();
+            Playlist playlist = temp.get(playlistId);
+            playlist.tracks = result;
+            callback.onGetPlaylistTracks(result);
+        });
+    }
+
+    public LiveData<HashMap<String, Playlist>> getPlaylistLiveData() {
         return playlists;
     }
 }

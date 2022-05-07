@@ -94,11 +94,6 @@ public class MainActivity extends AppCompatActivity {
                 repo.getCurrentUser(result -> {
                     System.out.println(result.id + " - " + result.displayName);
                 });
-//                repo.getUserPlaylists(result -> {
-//                    for(Playlist playlist : result) {
-//                        System.out.println(playlist.id + " - " + playlist.name);
-//                    }
-//                });
             }
 
             @Override
