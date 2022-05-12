@@ -10,6 +10,7 @@ import com.example.mixitup.data.Playlist;
 import com.example.mixitup.data.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class QueueViewModel extends AndroidViewModel {
 
@@ -17,7 +18,7 @@ public class QueueViewModel extends AndroidViewModel {
         super(application);
     }
 
-//    public LiveData<ArrayList<Playlist>> getPlaylists() {
-//        return Repository.instance.getPlaylistLiveData();
-//    }
+    public LiveData<HashMap<String, Playlist>> getActivePlaylists() {
+        return Repository.instance.getActivePlaylistLiveData();
+    }
 }

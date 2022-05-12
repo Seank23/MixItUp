@@ -1,5 +1,6 @@
 package com.example.mixitup.queue;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +22,7 @@ import java.util.Collection;
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.PlaylistHolder> {
 
     private Playlist[] playlists = new Playlist[0];
+    private boolean[] playlistActive;
     private Fragment p;
 
     public PlaylistAdapter(Fragment parent) {
@@ -53,6 +56,20 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
         tracks.setOnClickListener(click -> {
             ((AddPlaylistFragment) p).showTracks(playlists[position]);
         });
+
+        CardView card = holder.itemView.findViewById(R.id.cardPlaylistItem);
+        card.setOnClickListener(click -> {
+            playlistActive[position] = !playlistActive[position];
+            if(playlistActive[position])
+                card.setCardBackgroundColor(Color.CYAN);
+            else
+                card.setCardBackgroundColor(Color.WHITE);
+        });
+
+        if(playlistActive[position])
+            card.setCardBackgroundColor(Color.CYAN);
+        else
+            card.setCardBackgroundColor(Color.WHITE);
     }
 
     @Override
@@ -62,6 +79,16 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
 
     public void setData(Playlist[] playlistData) {
         playlists = playlistData;
+        playlistActive = new boolean[playlists.length];
         notifyDataSetChanged();
+    }
+
+    public String[] getSelectedPlaylists() {
+        ArrayList<String> temp = new ArrayList<>();
+        for(int i = 0; i < playlistActive.length; i++) {
+            if(playlistActive[i])
+                temp.add(playlists[i].id);
+        }
+        return temp.toArray(new String[temp.size()]);
     }
 }

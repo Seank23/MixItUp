@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.example.mixitup.MainActivity;
 import com.example.mixitup.R;
+import com.example.mixitup.data.Playlist;
 
 public class QueueFragment extends Fragment {
 
@@ -32,14 +33,14 @@ public class QueueFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-//        playlistAdapter = new PlaylistAdapter();
-//        RecyclerView rvPlaylistQueue = getView().findViewById(R.id.rvPlaylistQueue);
-//        rvPlaylistQueue.setAdapter(playlistAdapter);
-//        rvPlaylistQueue.setLayoutManager(new LinearLayoutManager(this.getContext()));
-//
-//        viewModel.getPlaylists().observe(getViewLifecycleOwner(), playlists -> {
-//            playlistAdapter.setData(playlists);
-//        });
+        playlistAdapter = new PlaylistAdapter(this);
+        RecyclerView rvPlaylistQueue = getView().findViewById(R.id.rvPlaylistQueue);
+        rvPlaylistQueue.setAdapter(playlistAdapter);
+        rvPlaylistQueue.setLayoutManager(new LinearLayoutManager(this.getContext()));
+
+        viewModel.getActivePlaylists().observe(getViewLifecycleOwner(), playlists -> {
+            playlistAdapter.setData(playlists.values().toArray(new Playlist[playlists.values().size()]));
+        });
 
         getView().findViewById(R.id.btnAddPlaylist).setOnClickListener(click -> {
             p.navAddPlaylist();

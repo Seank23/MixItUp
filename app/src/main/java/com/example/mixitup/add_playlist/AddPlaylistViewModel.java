@@ -30,4 +30,6 @@ public class AddPlaylistViewModel extends AndroidViewModel {
     public void fetchPlaylistTracks(String playlistId, SpotifyConnection.APIGetPlaylistTracksCallback callback) {
         Repository.instance.fetchPlaylistTracks(playlistId, callback);
     }
+
+    public void setActivePlaylists(String[] activeIds) { Repository.instance.setActivePlaylists(activeIds); }
 }

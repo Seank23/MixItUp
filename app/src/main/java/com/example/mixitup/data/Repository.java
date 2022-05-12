@@ -17,11 +17,13 @@ public class Repository {
     private SpotifyConnection spotifyConnection;
     private User currentUser;
     private MutableLiveData<HashMap<String, Playlist>> playlists;
+    private MutableLiveData<HashMap<String, Playlist>> activePlaylists;
 
     public Repository() {
         instance = this;
         spotifyConnection = new SpotifyConnection();
         playlists = new MutableLiveData<>();
+        activePlaylists = new MutableLiveData<>();
     }
 
     public void initSpotifyConnection(String accessToken, SpotifyAppRemote spotifyAppRemote) {
@@ -50,7 +52,20 @@ public class Repository {
         });
     }
 
-    public LiveData<HashMap<String, Playlist>> getPlaylistLiveData() {
-        return playlists;
+    public LiveData<HashMap<String, Playlist>> getPlaylistLiveData() { return playlists; }
+
+    public LiveData<HashMap<String, Playlist>> getActivePlaylistLiveData() { return activePlaylists; }
+
+    public void setActivePlaylists(String[] activeIds) {
+        HashMap<String, Playlist> temp = playlists.getValue();
+        for(String id : activeIds)
+            temp.get(id).isActive = true;
+
+        HashMap<String, Playlist> updatedActivePlaylists = new HashMap<>();
+        for(Playlist playlist : temp.values()) {
+            if(playlist.isActive)
+                updatedActivePlaylists.put(playlist.id, playlist);
+        }
+        activePlaylists.setValue(updatedActivePlaylists);
     }
 }

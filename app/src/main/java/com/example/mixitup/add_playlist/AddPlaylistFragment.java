@@ -57,6 +57,12 @@ public class AddPlaylistFragment extends Fragment {
             playlistAdapter.setData(playlists.values().toArray(new Playlist[playlists.values().size()]));
         });
 
+        getActivity().findViewById(R.id.btnConfirmAdd).setOnClickListener(click -> {
+            String[] selectedIds = playlistAdapter.getSelectedPlaylists();
+            viewModel.setActivePlaylists(selectedIds);
+            p.navQueue();
+        });
+
         viewModel.fetchUserPlaylists();
     }
 
