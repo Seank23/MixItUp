@@ -3,7 +3,6 @@ package com.example.mixitup.queue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,8 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mixitup.R;
-import com.example.mixitup.add_playlist.AddPlaylistFragment;
-import com.example.mixitup.data.Playlist;
 import com.example.mixitup.data.Track;
 
 public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder> {

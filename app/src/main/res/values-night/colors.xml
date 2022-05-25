@@ -8,10 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="mainText">#2D313D</color>
+    <color name="mainText">#FFFFFF</color>
     <color name="altText">#8D8F97</color>
-    <color name="mainBg">#FFFFFF</color>
+    <color name="mainBg">#141414</color>
     <color name="btnBg">#2D313D</color>
     <color name="btnText">#FFFFFF</color>
-
 </resources>

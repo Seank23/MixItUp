@@ -1,4 +1,4 @@
-package com.example.mixitup.add_playlist;
+package com.example.mixitup.playlists;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -18,8 +18,6 @@ import com.example.mixitup.MainActivity;
 import com.example.mixitup.R;
 import com.example.mixitup.data.Playlist;
 import com.example.mixitup.data.Track;
-import com.example.mixitup.queue.PlaylistAdapter;
-import com.example.mixitup.queue.QueueViewModel;
 import com.example.mixitup.queue.TrackAdapter;
 
 import java.util.ArrayList;
@@ -57,10 +55,14 @@ public class AddPlaylistFragment extends Fragment {
             playlistAdapter.setData(playlists.values().toArray(new Playlist[playlists.values().size()]));
         });
 
-        getActivity().findViewById(R.id.btnConfirmAdd).setOnClickListener(click -> {
+        getActivity().findViewById(R.id.ibtnBack).setOnClickListener(click -> {
+            p.navPlaylists();
+        });
+
+        getActivity().findViewById(R.id.ibtnConfirm).setOnClickListener(click -> {
             String[] selectedIds = playlistAdapter.getSelectedPlaylists();
             viewModel.setActivePlaylists(selectedIds);
-            p.navQueue();
+            p.navPlaylists();
         });
 
         viewModel.fetchUserPlaylists();

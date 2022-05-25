@@ -1,4 +1,4 @@
-package com.example.mixitup.queue;
+package com.example.mixitup.playlists;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -13,11 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mixitup.R;
-import com.example.mixitup.add_playlist.AddPlaylistFragment;
 import com.example.mixitup.data.Playlist;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.PlaylistHolder> {
 
@@ -57,19 +56,19 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
             ((AddPlaylistFragment) p).showTracks(playlists[position]);
         });
 
-        CardView card = holder.itemView.findViewById(R.id.cardPlaylistItem);
+        MaterialCardView card = holder.itemView.findViewById(R.id.cardPlaylistItem);
         card.setOnClickListener(click -> {
             playlistActive[position] = !playlistActive[position];
             if(playlistActive[position])
-                card.setCardBackgroundColor(Color.CYAN);
+                card.setCardBackgroundColor(p.getResources().getColor(R.color.btnBg));
             else
-                card.setCardBackgroundColor(Color.WHITE);
+                card.setCardBackgroundColor(p.getResources().getColor(R.color.mainBg));
         });
 
         if(playlistActive[position])
-            card.setCardBackgroundColor(Color.CYAN);
+            card.setCardBackgroundColor(p.getResources().getColor(R.color.btnBg));
         else
-            card.setCardBackgroundColor(Color.WHITE);
+            card.setCardBackgroundColor(p.getResources().getColor(R.color.mainBg));
     }
 
     @Override

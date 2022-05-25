@@ -1,4 +1,4 @@
-package com.example.mixitup.queue;
+package com.example.mixitup.playlists;
 
 import android.os.Bundle;
 
@@ -14,20 +14,19 @@ import android.view.ViewGroup;
 import com.example.mixitup.MainActivity;
 import com.example.mixitup.R;
 import com.example.mixitup.data.Playlist;
-import com.example.mixitup.playlists.PlaylistAdapter;
 
-public class QueueFragment extends Fragment {
+public class PlaylistsFragment extends Fragment {
 
-    private QueueViewModel viewModel;
+    private PlaylistsViewModel viewModel;
     private PlaylistAdapter playlistAdapter;
     private MainActivity p;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        viewModel  = new ViewModelProvider(this).get(QueueViewModel.class);
+        viewModel  = new ViewModelProvider(this).get(PlaylistsViewModel.class);
         p = (MainActivity) getActivity();
-        return inflater.inflate(R.layout.fragment_queue, container, false);
+        return inflater.inflate(R.layout.fragment_playlists, container, false);
     }
 
     @Override
@@ -35,12 +34,16 @@ public class QueueFragment extends Fragment {
         super.onStart();
 
         playlistAdapter = new PlaylistAdapter(this);
-        RecyclerView rvPlaylistQueue = getView().findViewById(R.id.rvSongQueue);
-        rvPlaylistQueue.setAdapter(playlistAdapter);
-        rvPlaylistQueue.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        RecyclerView rvActivePlaylists = getView().findViewById(R.id.rvActivePlaylists);
+        rvActivePlaylists.setAdapter(playlistAdapter);
+        rvActivePlaylists.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         viewModel.getActivePlaylists().observe(getViewLifecycleOwner(), playlists -> {
             playlistAdapter.setData(playlists.values().toArray(new Playlist[playlists.values().size()]));
+        });
+
+        getView().findViewById(R.id.fbtnAddPlaylist).setOnClickListener(click -> {
+            p.navAddPlaylist();
         });
     }
 }

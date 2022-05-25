@@ -1,18 +1,24 @@
 package com.example.mixitup;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
 
-import com.example.mixitup.add_playlist.AddPlaylistFragment;
-import com.example.mixitup.data.Playlist;
+import com.example.mixitup.playlists.AddPlaylistFragment;
 import com.example.mixitup.data.Repository;
 import com.example.mixitup.data.SpotifyConnection;
+import com.example.mixitup.playlists.PlaylistsFragment;
 import com.example.mixitup.queue.QueueFragment;
+import com.google.android.material.navigation.NavigationView;
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
@@ -35,9 +41,27 @@ public class MainActivity extends AppCompatActivity {
         repo = new Repository();
 
         fragments = new ArrayList<>();
+        fragments.add(new PlaylistsFragment());
         fragments.add(new QueueFragment());
         fragments.add(new AddPlaylistFragment());
         setCurrentFragment(fragments.get(0), R.id.flFragments);
+
+        DrawerLayout navDrawer = findViewById(R.id.dlNav);
+        navDrawer.addDrawerListener(new MyDrawerListener());
+
+        NavigationView navView = findViewById(R.id.nvNavView);
+        navView.setNavigationItemSelectedListener(item -> {
+            switch(item.getItemId()) {
+                case R.id.navPlaylists:
+                    setCurrentFragment(fragments.get(0), R.id.flFragments);
+                    navDrawer.closeDrawer(Gravity.LEFT);
+                case R.id.navQueue:
+                    setCurrentFragment(fragments.get(1), R.id.flFragments);
+                    navDrawer.closeDrawer(Gravity.LEFT);
+            }
+            return true;
+        });
+        navView.setCheckedItem(R.id.navPlaylists);
     }
 
     @Override
@@ -50,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
         AuthorizationRequest request = builder.build();
 
         AuthorizationClient.openLoginActivity(this, SpotifyConnection.getRequestCode(), request);
+
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -64,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 case TOKEN:
                     // Handle successful response
                     connectAppRemote(response.getAccessToken());
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     break;
 
                 // Auth flow returned an error
@@ -109,10 +136,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void navAddPlaylist() {
-        setCurrentFragment(fragments.get(1), R.id.flFragments);
+        setCurrentFragment(fragments.get(2), R.id.flFragments);
     }
 
-    public void navQueue() {
+    public void navPlaylists() {
         setCurrentFragment(fragments.get(0), R.id.flFragments);
     }
 
@@ -120,5 +147,13 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(frameLayoutId, fragment);
         ft.commit();
+    }
+
+    class MyDrawerListener extends SimpleDrawerListener {
+        @Override
+        public void onDrawerSlide(View drawerView, float slideOffset) {
+            super.onDrawerSlide(drawerView, slideOffset);
+            findViewById(R.id.dlNav).setTranslationZ(slideOffset);
+        }
     }
 }
