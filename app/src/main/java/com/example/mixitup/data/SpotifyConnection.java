@@ -20,6 +20,10 @@ public class SpotifyConnection {
     private String token;
     private SpotifyAppRemote appRemote;
 
+    public interface APIVoidCallback {
+        void onReturn();
+    }
+
     public interface APIGetUserCallback {
         void onGetUser(User newUser);
     }
@@ -89,31 +93,35 @@ public class SpotifyConnection {
         }
     }
 
-    public void getPlaylistTracks(String playlistId, APIGetPlaylistTracksCallback callback) {
-        try {
-            Utils.getHttpResponseAsync(String.format("https://api.spotify.com/v1/playlists/%s/tracks", playlistId), token, result -> {
-                try {
-                    JSONArray tracksJson = new JSONObject(result).getJSONArray("items");
-                    ArrayList<Track> tracks = new ArrayList<>();
-                    for(int i = 0; i < tracksJson.length(); i++) {
-                        JSONObject trackJson = tracksJson.getJSONObject(i).getJSONObject("track");
-                        String id = (String)trackJson.get("id");
-                        String name = (String)trackJson.get("name");
-                        JSONArray artists = trackJson.getJSONArray("artists");
-                        String artistStr = "";
-                        for(int j = 0; j < artists.length(); j++) {
-                            artistStr += artists.getJSONObject(j).get("name") + ", ";
+    public void getPlaylistTracks(String playlistId, int numTracks, APIGetPlaylistTracksCallback callback) {
+
+        ArrayList<Track> tracks = new ArrayList<>();
+        for(int offset = 0; offset < numTracks; offset += 100) {
+            try {
+                Utils.getHttpResponseAsync(String.format("https://api.spotify.com/v1/playlists/%s/tracks?offset=%s&limit=100", playlistId, offset), token, result -> {
+                    try {
+                        JSONArray tracksJson = new JSONObject(result).getJSONArray("items");
+                        for (int i = 0; i < tracksJson.length(); i++) {
+                            JSONObject trackJson = tracksJson.getJSONObject(i).getJSONObject("track");
+                            String id = (String) trackJson.get("id");
+                            String name = (String) trackJson.get("name");
+                            JSONArray artists = trackJson.getJSONArray("artists");
+                            String artistStr = "";
+                            for (int j = 0; j < artists.length(); j++) {
+                                artistStr += artists.getJSONObject(j).get("name") + ", ";
+                            }
+                            artistStr = artistStr.substring(0, artistStr.length() - 2);
+                            tracks.add(new Track(id, name, artistStr));
                         }
-                        artistStr = artistStr.substring(0, artistStr.length() - 2);
-                        tracks.add(new Track(id, name, artistStr));
+                        if(tracks.size() == numTracks)
+                            callback.onGetPlaylistTracks(tracks);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    callback.onGetPlaylistTracks(tracks);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            });
-        } catch(Exception e) {
-            System.out.println(e.getStackTrace());
+                });
+            } catch (Exception e) {
+                System.out.println(e.getStackTrace());
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.mixitup.playlists;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +7,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -76,9 +74,9 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
         return playlists.length;
     }
 
-    public void setData(Playlist[] playlistData) {
+    public void setData(Playlist[] playlistData, boolean[] activePlaylists) {
         playlists = playlistData;
-        playlistActive = new boolean[playlists.length];
+        playlistActive = activePlaylists;
         notifyDataSetChanged();
     }
 

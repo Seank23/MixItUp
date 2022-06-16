@@ -21,6 +21,7 @@ import com.example.mixitup.data.Track;
 import com.example.mixitup.queue.TrackAdapter;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 public class AddPlaylistFragment extends Fragment {
 
@@ -52,7 +53,14 @@ public class AddPlaylistFragment extends Fragment {
         rvYourPlaylists.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         viewModel.getPlaylists().observe(getViewLifecycleOwner(), playlists -> {
-            playlistAdapter.setData(playlists.values().toArray(new Playlist[playlists.values().size()]));
+            Set<String> activeIds = viewModel.getActivePlaylists().keySet();
+            boolean[] playlistsActive = new boolean[playlists.size()];
+            String[] ids = playlists.keySet().toArray(new String[0]);
+            for(int i = 0; i < ids.length; i++) {
+                if(activeIds.contains(ids[i]))
+                    playlistsActive[i] = true;
+            }
+            playlistAdapter.setData(playlists.values().toArray(new Playlist[playlists.values().size()]), playlistsActive);
         });
 
         getActivity().findViewById(R.id.ibtnBack).setOnClickListener(click -> {
@@ -62,7 +70,11 @@ public class AddPlaylistFragment extends Fragment {
         getActivity().findViewById(R.id.ibtnConfirm).setOnClickListener(click -> {
             String[] selectedIds = playlistAdapter.getSelectedPlaylists();
             viewModel.setActivePlaylists(selectedIds);
-            p.navPlaylists();
+            viewModel.checkTracksFetched(selectedIds, () -> {
+                getActivity().findViewById(R.id.pbSpinner).setVisibility(View.INVISIBLE);
+                p.navPlaylists();
+            });
+            getActivity().findViewById(R.id.pbSpinner).setVisibility(View.VISIBLE);
         });
 
         viewModel.fetchUserPlaylists();

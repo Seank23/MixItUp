@@ -40,7 +40,7 @@ public class QueueFragment extends Fragment {
         rvPlaylistQueue.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
         viewModel.getActivePlaylists().observe(getViewLifecycleOwner(), playlists -> {
-            playlistAdapter.setData(playlists.values().toArray(new Playlist[playlists.values().size()]));
+            playlistAdapter.setData(playlists.values().toArray(new Playlist[playlists.values().size()]), new boolean[playlists.size()]);
         });
     }
 }

@@ -44,9 +44,10 @@ public class Repository {
     }
 
     public void fetchPlaylistTracks(String playlistId, SpotifyConnection.APIGetPlaylistTracksCallback callback) {
-        spotifyConnection.getPlaylistTracks(playlistId, result -> {
-            HashMap<String, Playlist> temp = playlists.getValue();
-            Playlist playlist = temp.get(playlistId);
+
+        HashMap<String, Playlist> temp = playlists.getValue();
+        Playlist playlist = temp.get(playlistId);
+        spotifyConnection.getPlaylistTracks(playlistId, playlist.numTracks, result -> {
             playlist.tracks = result;
             callback.onGetPlaylistTracks(result);
         });

@@ -9,6 +9,8 @@
         android:id="@+id/cardPlaylistItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="2dp"
+                android:fontFamily="@font/telex"
                 android:maxLines="1"
                 android:text="My Playlist"
                 android:textColor="@color/mainText"
@@ -36,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="28dp"
+                android:fontFamily="@font/telex"
                 android:maxLines="1"
                 android:text="Spotify"
                 android:textColor="@color/altText"
@@ -50,9 +54,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="20dp"
+            android:fontFamily="@font/telex"
             android:text="10 tracks"
-            android:textSize="16sp"
             android:textColor="@android:color/holo_blue_light"
+            android:textSize="16sp"
             app:strokeColor="@android:color/holo_blue_light" />
 
     </com.google.android.material.card.MaterialCardView>

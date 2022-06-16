@@ -12,7 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_margin="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/telex"
         android:text="Active Playlists"
         android:textAlignment="center"
         android:textColor="@color/mainText"
@@ -39,10 +43,11 @@
             android:layout_marginBottom="20dp"
             android:layout_toLeftOf="@+id/fbtnAddPlaylist"
             android:backgroundTint="@color/btnBg"
+            android:fontFamily="@font/telex"
+            android:shadowColor="@color/black"
             android:text="Mix"
             android:textColor="@color/btnText"
-            android:textSize="24dp"
-            android:shadowColor="@color/black"/>
+            android:textSize="24dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fbtnAddPlaylist"

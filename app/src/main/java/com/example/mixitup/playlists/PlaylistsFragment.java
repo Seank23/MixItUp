@@ -18,7 +18,7 @@ import com.example.mixitup.data.Playlist;
 public class PlaylistsFragment extends Fragment {
 
     private PlaylistsViewModel viewModel;
-    private PlaylistAdapter playlistAdapter;
+    private ActivePlaylistAdapter playlistAdapter;
     private MainActivity p;
 
     @Override
@@ -33,7 +33,7 @@ public class PlaylistsFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        playlistAdapter = new PlaylistAdapter(this);
+        playlistAdapter = new ActivePlaylistAdapter(this);
         RecyclerView rvActivePlaylists = getView().findViewById(R.id.rvActivePlaylists);
         rvActivePlaylists.setAdapter(playlistAdapter);
         rvActivePlaylists.setLayoutManager(new LinearLayoutManager(this.getContext()));

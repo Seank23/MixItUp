@@ -2,9 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="64dp">
+    android:layout_height="64dp"
+    android:background="@color/mainBg">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardPlaylistItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -15,37 +17,25 @@
         app:layout_constraintTop_toTopOf="parent"
         app:cardCornerRadius="8dp">
 
-        <TextView
-            android:id="@+id/lblTrackIndex"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
-            android:fontFamily="@font/telex"
-            android:text="1"
-            android:textColor="@color/mainText"
-            android:textSize="20sp" />
-
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="55dp"
-            android:layout_marginLeft="50dp">
+            android:layout_height="55dp" >
 
             <TextView
-                android:id="@+id/lblTrackName"
-                android:layout_width="300dp"
+                android:id="@+id/lblPlaylistName"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="2dp"
                 android:fontFamily="@font/telex"
                 android:maxLines="1"
-                android:text="Track 1"
+                android:text="My Playlist"
                 android:textColor="@color/mainText"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/lblTrackArtist"
-                android:layout_width="300dp"
+                android:id="@+id/lblPlaylistAuthor"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="28dp"
@@ -56,6 +46,28 @@
                 android:textSize="16sp" />
 
         </FrameLayout>
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/sldTracks"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="75dp"
+            android:valueFrom="0"
+            android:stepSize="1"/>
+
+        <TextView
+            android:id="@+id/lblNumTracks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="right|center_vertical"
+            android:fontFamily="@font/telex"
+            android:maxLines="1"
+            android:text="200 tracks"
+            android:textColor="@color/altText"
+            android:textSize="14sp" />
+
 
     </com.google.android.material.card.MaterialCardView>
 
