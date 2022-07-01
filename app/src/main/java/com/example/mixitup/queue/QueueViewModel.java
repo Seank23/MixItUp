@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.mixitup.data.Playlist;
 import com.example.mixitup.data.Repository;
+import com.example.mixitup.data.Track;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ public class QueueViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public LiveData<HashMap<String, Playlist>> getActivePlaylists() {
-        return Repository.instance.getActivePlaylistLiveData();
+    public LiveData<ArrayList<Track>> getMixedTracklist() {
+        return Repository.instance.getMixedTracklistLiveData();
     }
 }

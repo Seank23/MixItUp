@@ -2,6 +2,7 @@ package com.example.mixitup.playlists;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +15,8 @@ import android.view.ViewGroup;
 import com.example.mixitup.MainActivity;
 import com.example.mixitup.R;
 import com.example.mixitup.data.Playlist;
+
+import java.util.HashMap;
 
 public class PlaylistsFragment extends Fragment {
 
@@ -45,5 +48,14 @@ public class PlaylistsFragment extends Fragment {
         getView().findViewById(R.id.fbtnAddPlaylist).setOnClickListener(click -> {
             p.navAddPlaylist();
         });
+
+        getView().findViewById(R.id.btnMix).setOnClickListener(click -> {
+            viewModel.mixPlaylists();
+            p.navQueue();
+        });
     }
+
+    public void setTrackCounts(HashMap<String, Integer> trackCounts) { viewModel.setTrackCounts(trackCounts); }
+
+    public HashMap<String, Integer> getTrackCounts() { return viewModel.getTrackCounts(); }
 }

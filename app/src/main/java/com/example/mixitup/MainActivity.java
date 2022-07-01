@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navPlaylists:
                     setCurrentFragment(fragments.get(0), R.id.flFragments);
                     navDrawer.closeDrawer(Gravity.LEFT);
+                    break;
                 case R.id.navQueue:
                     setCurrentFragment(fragments.get(1), R.id.flFragments);
                     navDrawer.closeDrawer(Gravity.LEFT);
@@ -74,8 +75,6 @@ public class MainActivity extends AppCompatActivity {
         AuthorizationRequest request = builder.build();
 
         AuthorizationClient.openLoginActivity(this, SpotifyConnection.getRequestCode(), request);
-
-
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -142,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
     public void navPlaylists() {
         setCurrentFragment(fragments.get(0), R.id.flFragments);
     }
+
+    public void navQueue() { setCurrentFragment(fragments.get(1), R.id.flFragments); }
 
     private void setCurrentFragment(Fragment fragment, int frameLayoutId) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

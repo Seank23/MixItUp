@@ -14,12 +14,13 @@ import android.view.ViewGroup;
 import com.example.mixitup.MainActivity;
 import com.example.mixitup.R;
 import com.example.mixitup.data.Playlist;
+import com.example.mixitup.data.Track;
 import com.example.mixitup.playlists.PlaylistAdapter;
 
 public class QueueFragment extends Fragment {
 
     private QueueViewModel viewModel;
-    private PlaylistAdapter playlistAdapter;
+    private TrackAdapter trackAdapter;
     private MainActivity p;
 
     @Override
@@ -34,13 +35,13 @@ public class QueueFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        playlistAdapter = new PlaylistAdapter(this);
+        trackAdapter = new TrackAdapter(this);
         RecyclerView rvPlaylistQueue = getView().findViewById(R.id.rvSongQueue);
-        rvPlaylistQueue.setAdapter(playlistAdapter);
+        rvPlaylistQueue.setAdapter(trackAdapter);
         rvPlaylistQueue.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
-        viewModel.getActivePlaylists().observe(getViewLifecycleOwner(), playlists -> {
-            playlistAdapter.setData(playlists.values().toArray(new Playlist[playlists.values().size()]), new boolean[playlists.size()]);
+        viewModel.getMixedTracklist().observe(getViewLifecycleOwner(), tracks -> {
+            trackAdapter.setData(tracks.toArray(new Track[tracks.size()]));
         });
     }
 }

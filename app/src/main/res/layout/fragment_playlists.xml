@@ -34,6 +34,7 @@
         android:layout_alignParentBottom="true">
 
         <Button
+            android:id="@+id/btnMix"
             style="@style/Widget.Material3.Button.ElevatedButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"

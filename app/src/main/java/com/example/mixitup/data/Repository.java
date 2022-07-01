@@ -18,12 +18,16 @@ public class Repository {
     private User currentUser;
     private MutableLiveData<HashMap<String, Playlist>> playlists;
     private MutableLiveData<HashMap<String, Playlist>> activePlaylists;
+    private MutableLiveData<ArrayList<Track>> mixedTracklist;
+    private HashMap<String, Integer> trackCounts;
 
     public Repository() {
         instance = this;
         spotifyConnection = new SpotifyConnection();
         playlists = new MutableLiveData<>();
         activePlaylists = new MutableLiveData<>();
+        mixedTracklist = new MutableLiveData<>();
+        trackCounts = new HashMap<>();
     }
 
     public void initSpotifyConnection(String accessToken, SpotifyAppRemote spotifyAppRemote) {
@@ -69,4 +73,12 @@ public class Repository {
         }
         activePlaylists.setValue(updatedActivePlaylists);
     }
+
+    public void setMixedTracklist(ArrayList<Track> tracklist) { mixedTracklist.setValue(tracklist); }
+
+    public LiveData<ArrayList<Track>> getMixedTracklistLiveData() { return mixedTracklist; }
+
+    public void setTrackCounts(HashMap<String, Integer> trackCounts) { this.trackCounts = trackCounts; }
+
+    public HashMap<String, Integer> getTrackCounts() { return trackCounts; }
 }
