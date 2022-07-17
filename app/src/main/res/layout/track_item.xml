@@ -16,6 +16,16 @@
         app:cardCornerRadius="8dp">
 
         <TextView
+            android:id="@+id/lblNoTracks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No Tracks"
+            android:textSize="20sp"
+            android:textColor="@color/mainText"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
+
+        <TextView
             android:id="@+id/lblTrackIndex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

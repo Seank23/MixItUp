@@ -63,6 +63,9 @@ public class Repository {
 
     public void setActivePlaylists(String[] activeIds) {
         HashMap<String, Playlist> temp = playlists.getValue();
+
+        for(Playlist playlist : temp.values())
+            playlist.isActive = false;
         for(String id : activeIds)
             temp.get(id).isActive = true;
 

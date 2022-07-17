@@ -70,11 +70,15 @@ public class AddPlaylistFragment extends Fragment {
         getActivity().findViewById(R.id.ibtnConfirm).setOnClickListener(click -> {
             String[] selectedIds = playlistAdapter.getSelectedPlaylists();
             viewModel.setActivePlaylists(selectedIds);
-            viewModel.checkTracksFetched(selectedIds, () -> {
-                getActivity().findViewById(R.id.pbSpinner).setVisibility(View.INVISIBLE);
+            if(selectedIds.length > 0) {
+                viewModel.checkTracksFetched(selectedIds, () -> {
+                    getActivity().findViewById(R.id.pbSpinner).setVisibility(View.INVISIBLE);
+                    p.navPlaylists();
+                });
+                getActivity().findViewById(R.id.pbSpinner).setVisibility(View.VISIBLE);
+            } else {
                 p.navPlaylists();
-            });
-            getActivity().findViewById(R.id.pbSpinner).setVisibility(View.VISIBLE);
+            }
         });
 
         viewModel.fetchUserPlaylists();

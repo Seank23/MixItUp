@@ -44,10 +44,20 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
     public void onBindViewHolder(@NonNull PlaylistHolder holder, int position) {
 
         TextView name = holder.itemView.findViewById(R.id.lblPlaylistName);
-        name.setText(playlists[position].name);
         TextView author = holder.itemView.findViewById(R.id.lblPlaylistAuthor);
-        author.setText(playlists[position].author);
         Button tracks = holder.itemView.findViewById(R.id.btnPlaylistTracks);
+        TextView noPlaylists = holder.itemView.findViewById(R.id.lblNoPlaylists);
+
+        if(playlists[position].id == "Empty") {
+            name.setVisibility(View.INVISIBLE);
+            author.setVisibility(View.INVISIBLE);
+            tracks.setVisibility(View.INVISIBLE);
+            noPlaylists.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        name.setText(playlists[position].name);
+        author.setText(playlists[position].author);
         tracks.setText(playlists[position].numTracks + " tracks");
 
         tracks.setOnClickListener(click -> {
@@ -75,7 +85,12 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playli
     }
 
     public void setData(Playlist[] playlistData, boolean[] activePlaylists) {
-        playlists = playlistData;
+        if(playlistData.length > 0)
+            playlists = playlistData;
+        else {
+            Playlist[] empty = new Playlist[] { new Playlist("Empty", "", "", 0) };
+            playlists = empty;
+        }
         playlistActive = activePlaylists;
         notifyDataSetChanged();
     }

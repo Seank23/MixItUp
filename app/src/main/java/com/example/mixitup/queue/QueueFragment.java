@@ -39,6 +39,7 @@ public class QueueFragment extends Fragment {
         RecyclerView rvPlaylistQueue = getView().findViewById(R.id.rvSongQueue);
         rvPlaylistQueue.setAdapter(trackAdapter);
         rvPlaylistQueue.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        trackAdapter.setData(new Track[0]);
 
         viewModel.getMixedTracklist().observe(getViewLifecycleOwner(), tracks -> {
             trackAdapter.setData(tracks.toArray(new Track[tracks.size()]));

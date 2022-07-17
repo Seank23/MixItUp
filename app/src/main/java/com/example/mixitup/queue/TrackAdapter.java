@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mixitup.R;
+import com.example.mixitup.data.Playlist;
 import com.example.mixitup.data.Track;
 
 public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder> {
@@ -39,10 +40,20 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
     public void onBindViewHolder(@NonNull TrackHolder holder, int position) {
 
         TextView name = holder.itemView.findViewById(R.id.lblTrackName);
-        name.setText(tracks[position].title);
         TextView artist = holder.itemView.findViewById(R.id.lblTrackArtist);
-        artist.setText(tracks[position].artist);
         TextView index = holder.itemView.findViewById(R.id.lblTrackIndex);
+        TextView noTracks = holder.itemView.findViewById(R.id.lblNoTracks);
+
+        if(tracks[position].id == "Empty") {
+            name.setVisibility(View.INVISIBLE);
+            artist.setVisibility(View.INVISIBLE);
+            index.setVisibility(View.INVISIBLE);
+            noTracks.setVisibility(View.VISIBLE);
+            return;
+        }
+
+        name.setText(tracks[position].title);
+        artist.setText(tracks[position].artist);
         index.setText("" + (position + 1));
     }
 
@@ -52,7 +63,12 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackHolder>
     }
 
     public void setData(Track[] trackData) {
-        tracks = trackData;
+        if(trackData.length > 0)
+            tracks = trackData;
+        else {
+            Track[] empty = new Track[] { new Track("Empty", "", "") };
+            tracks = empty;
+        }
         notifyDataSetChanged();
     }
 }

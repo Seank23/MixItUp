@@ -28,13 +28,19 @@ public class PlaylistsViewModel extends AndroidViewModel {
 
     public HashMap<String, Integer> getTrackCounts() { return Repository.instance.getTrackCounts(); }
 
+    public void setActivePlaylists(String[] activeIds) { Repository.instance.setActivePlaylists(activeIds); }
+
     public LiveData<HashMap<String, Playlist>> getActivePlaylists() {
         return Repository.instance.getActivePlaylistLiveData();
     }
 
-    public void mixPlaylists() {
+    public boolean mixPlaylists() {
 
         HashMap<String, Playlist> activePlaylists = getActivePlaylists().getValue();
+        if(activePlaylists == null)
+            return false;
+        if(activePlaylists.isEmpty())
+            return false;
         HashMap<String, Integer> trackCounts = getTrackCounts();
         ArrayList<Track> tracklist = new ArrayList<>();
         for(String id : activePlaylists.keySet()) {
@@ -52,5 +58,6 @@ public class PlaylistsViewModel extends AndroidViewModel {
         }
         Collections.shuffle(tracklist);
         Repository.instance.setMixedTracklist(tracklist);
+        return true;
     }
 }
