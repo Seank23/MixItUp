@@ -28,4 +28,70 @@
         android:layout_height="match_parent"
         android:layout_below="@id/lblTitle" />
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="300dp"
+        android:layout_height="64dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/track_player_bg">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="60dp">
+
+            <TextView
+                android:id="@+id/lblPlayerName"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/telex"
+                android:maxLines="1"
+                android:text="Track 1"
+                android:textColor="@color/mainText"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/lblPlayerArtist"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="34dp"
+                android:fontFamily="@font/telex"
+                android:maxLines="1"
+                android:text="Spotify"
+                android:textColor="@color/altText"
+                android:textSize="16sp" />
+
+        </FrameLayout>
+
+        <ImageButton
+            android:id="@+id/ibtnPlay"
+            android:layout_width="50dp"
+            android:layout_height="64dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="right"
+            android:layout_weight="0"
+            android:src="@drawable/ic_play"
+            android:background="@null"
+            app:tint="@color/mainText" />
+
+        <ImageButton
+            android:id="@+id/ibtnSkip"
+            android:layout_width="50dp"
+            android:layout_height="64dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="right"
+            android:layout_marginRight="50dp"
+            android:layout_weight="0"
+            android:src="@drawable/ic_skip"
+            android:background="@null"
+            app:tint="@color/mainText" />
+
+    </androidx.cardview.widget.CardView>
+
 </RelativeLayout>

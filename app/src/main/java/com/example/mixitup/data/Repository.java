@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.types.PlayerState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,4 +86,10 @@ public class Repository {
     public void setTrackCounts(HashMap<String, Integer> trackCounts) { this.trackCounts = trackCounts; }
 
     public HashMap<String, Integer> getTrackCounts() { return trackCounts; }
+
+    public void playTrack(String trackId) { spotifyConnection.playTrack(trackId); }
+
+    public void pauseTrack() { spotifyConnection.pauseTrack(); }
+
+    public void subscribeToPlayer(Subscription.EventCallback<PlayerState> callback) { spotifyConnection.subscribeToPlayer(callback); }
 }

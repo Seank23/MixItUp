@@ -3,6 +3,9 @@ package com.example.mixitup.data;
 import com.example.mixitup.Utils;
 import com.example.mixitup.data.Track;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
+import com.spotify.protocol.client.CallResult;
+import com.spotify.protocol.client.Subscription;
+import com.spotify.protocol.types.PlayerState;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,6 +22,8 @@ public class SpotifyConnection {
 
     private String token;
     private SpotifyAppRemote appRemote;
+
+    private String curTrackId = "";
 
     public interface APIVoidCallback {
         void onReturn();
@@ -123,5 +128,27 @@ public class SpotifyConnection {
                 System.out.println(e.getStackTrace());
             }
         }
+    }
+
+    public void playTrack(String trackId) {
+        appRemote.getPlayerApi().getPlayerState().setResultCallback(result -> {
+            String trackUri = "spotify:track:" + trackId;
+            curTrackId = trackUri;
+            if(result.track == null)
+                appRemote.getPlayerApi().play(trackUri);
+
+            if(trackUri.equals(result.track.uri) && result.isPaused)
+                appRemote.getPlayerApi().resume();
+            else
+                appRemote.getPlayerApi().play(trackUri);
+        });
+    }
+
+    public void pauseTrack() {
+        appRemote.getPlayerApi().pause();
+    }
+
+    public void subscribeToPlayer(Subscription.EventCallback<PlayerState> callback) {
+        appRemote.getPlayerApi().subscribeToPlayerState().setEventCallback(callback);
     }
 }
