@@ -1,9 +1,7 @@
 package com.example.mixitup.data;
 
 import com.example.mixitup.Utils;
-import com.example.mixitup.data.Track;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
-import com.spotify.protocol.client.CallResult;
 import com.spotify.protocol.client.Subscription;
 import com.spotify.protocol.types.PlayerState;
 
@@ -13,6 +11,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SpotifyConnection {
 
@@ -128,6 +128,21 @@ public class SpotifyConnection {
                 System.out.println(e.getStackTrace());
             }
         }
+    }
+
+    public void addToQueue(List<String> trackIds) {
+
+        appRemote.getPlayerApi().getPlayerState().setResultCallback(result -> {
+
+            for(int i = 0; i < trackIds.size(); i++)
+                appRemote.getPlayerApi().skipNext();
+
+            for(String trackId : trackIds.subList(1, trackIds.size())) {
+                String trackUri = "spotify:track:" + trackId;
+                appRemote.getPlayerApi().queue(trackUri);
+            }
+            playTrack(trackIds.get(0));
+        });
     }
 
     public void playTrack(String trackId) {

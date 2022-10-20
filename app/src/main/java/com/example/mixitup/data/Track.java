@@ -11,4 +11,6 @@ public class Track {
         this.title = title;
         this.artist = artist;
     }
+
+    public String getId() { return id; }
 }

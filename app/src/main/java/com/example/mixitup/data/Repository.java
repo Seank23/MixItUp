@@ -12,6 +12,7 @@ import com.spotify.protocol.types.PlayerState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Repository {
 
@@ -90,6 +91,8 @@ public class Repository {
     public void playTrack(String trackId) { spotifyConnection.playTrack(trackId); }
 
     public void pauseTrack() { spotifyConnection.pauseTrack(); }
+
+    public void queueTracks(List<String> tracks) { spotifyConnection.addToQueue(tracks); }
 
     public void subscribeToPlayer(Subscription.EventCallback<PlayerState> callback) { spotifyConnection.subscribeToPlayer(callback); }
 }

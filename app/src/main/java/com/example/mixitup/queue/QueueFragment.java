@@ -41,7 +41,7 @@ public class QueueFragment extends Fragment {
         rvPlaylistQueue.setLayoutManager(new LinearLayoutManager(this.getContext()));
         trackAdapter.setData(new Track[0]);
 
-        viewModel.handleTrackEnding(this);
+//        viewModel.handleTrackEnding(this);
 
         viewModel.getMixedTracklist().observe(getViewLifecycleOwner(), tracks -> {
             trackAdapter.setData(tracks.toArray(new Track[tracks.size()]));

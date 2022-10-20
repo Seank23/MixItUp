@@ -14,6 +14,7 @@ import com.example.mixitup.data.Track;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 public class QueueViewModel extends AndroidViewModel {
 
@@ -52,7 +53,8 @@ public class QueueViewModel extends AndroidViewModel {
 
     private void handlePlayState() {
         if (playState) {
-            Repository.instance.playTrack(getMixedTracklist().getValue().get(currentTrack).id);
+            Repository.instance.queueTracks(getMixedTracklist().getValue().stream().map(Track::getId).collect(Collectors.toList()));
+//            Repository.instance.playTrack(getMixedTracklist().getValue().get(currentTrack).id);
             trackStarted = true;
         }
         else
